@@ -1,0 +1,1762 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \makeatletter
+    \newsavebox\pandoc@box
+    \newcommand*\pandocbounded[1]{%
+      \sbox\pandoc@box{#1}%
+      % scaling factors for width and height
+      \Gscale@div\@tempa\textheight{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+      \Gscale@div\@tempb\linewidth{\wd\pandoc@box}%
+      % select the smaller of both
+      \ifdim\@tempb\p@<\@tempa\p@
+        \let\@tempa\@tempb
+      \fi
+      % scaling accordingly (\@tempa < 1)
+      \ifdim\@tempa\p@<\p@
+        \scalebox{\@tempa}{\usebox\pandoc@box}%
+      % scaling not needed, use as it is
+      \else
+        \usebox{\pandoc@box}%
+      \fi
+    }
+    \makeatother
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Analiza\_mieszkan\_Final}
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \section{WPROWADZENIE}\label{wprowadzenie}
+
+Wykorzystywany zbiór danych pochodzi z serwisu
+\href{https://www.kaggle.com/datasets/krzysztofjamroz/apartment-prices-in-poland/data}{Kaggle.com}
+i zawiera ceny mieszkań z 15 największych miast w Polsce. Rzeczone dane
+były zbierane co miesiąc, od sierpnia 2023 do czerwca 2024.
+
+Po pobraniu paczki spakowanych danych wyłaniają się przed nami pliki o
+następującej strukturze: * apartments\_pl\_YYYY\_MM.csv *
+apartments\_rent\_pl\_YYYY\_MM.csv
+
+Na potrzeby naszej analizy będziemy korzystać tylko ze zbioru
+\textbf{apartments\_pl\_YYYY\_MM.csv}, gdyż będziemy analizować
+mieszkania wystawione na sprzedaż, a nie na wynajem.
+
+W datasecie znajduje się 195568 obserwacji.
+
+Dane pochodzą z ogłoszeń, a nie z aktów notarialnych, w związku z czym
+mogą zawierać ceny ofertowe, a nie transakcyjne. Ponadto oferty pochodzą
+z kolejnych miesięcy, więc część z nich może się powtarzać.
+
+Cały kod jest częścią naszego projektu końcowego z ML, w którym staramy
+przewiedzieć ceny mieszkań na podstawie szeregu parametrów, takich jak
+miasto, metraż, liczba pokoi, piętro, liczba pięter w budynku, rok
+budowy, odległość od centrum miasta, odległość od poszczególnych POI,
+oraz udogodnień, takich jak winda, garaż, miejsce parkingowe, ochrona,
+balkon i komórka lokatorska.
+
+Ponadto chcielibyśmy znaleźć odpowiedzi na następujących pytania: 1. Jak
+rozkładają się ceny mieszkań w poszczególnych miastach. 2. Jakie
+parametry mieszkań i ich udogodnienia wpływają na cenę.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 0. Importowanie bibliotek}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{pandas}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{pd}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{ticker}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{ticker}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{seaborn}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{sns}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{pathlib}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{Path}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{sys}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{missingno}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{msno}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{jinja2}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{j2}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{impute}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{KNNImputer}    
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{27}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Konfiguracja stylu wykresów}
+\PY{n}{plt}\PY{o}{.}\PY{n}{style}\PY{o}{.}\PY{n}{use}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{seaborn\PYZhy{}v0\PYZus{}8\PYZhy{}whitegrid}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{sns}\PY{o}{.}\PY{n}{set\PYZus{}palette}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Set2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{FIGSIZE} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{rcParams}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{figure.figsize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{FIGSIZE}
+\PY{n}{formatter} \PY{o}{=} \PY{n}{ticker}\PY{o}{.}\PY{n}{FuncFormatter}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{,} \PY{n}{pos}\PY{p}{:} \PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{x}\PY{o}{/}\PY{l+m+mi}{1000}\PY{l+s+si}{:}\PY{l+s+s1}{.0f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{k}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Wczytujemy i łączymy wszystkie pliki CSV odnoszące się do sprzedaży
+mieszkań.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Filtrowanie argumentów Jupytera}
+\PY{n}{sys}\PY{o}{.}\PY{n}{argv} \PY{o}{=} \PY{p}{[}\PY{n}{arg} \PY{k}{for} \PY{n}{arg} \PY{o+ow}{in} \PY{n}{sys}\PY{o}{.}\PY{n}{argv} \PY{k}{if} \PY{o+ow}{not} \PY{n}{arg}\PY{o}{.}\PY{n}{startswith}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}f=}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} 1. Wczytywanie danych}
+\PY{c+c1}{\PYZsh{} Ustawienie katalogu z danymi}
+\PY{c+c1}{\PYZsh{} Można podać katalog jako argument wiersza poleceń lub użyć domyślnego katalogu \PYZsq{}data\PYZsq{}}
+\PY{c+c1}{\PYZsh{} Jeśli katalog nie istnieje, zostanie zgłoszony błąd FileNotFoundError}
+\PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{sys}\PY{o}{.}\PY{n}{argv}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{l+m+mi}{1}\PY{p}{:}
+    \PY{n}{DATA\PYZus{}DIR} \PY{o}{=} \PY{n}{Path}\PY{p}{(}\PY{n}{sys}\PY{o}{.}\PY{n}{argv}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+\PY{k}{else}\PY{p}{:}
+    \PY{n}{DATA\PYZus{}DIR} \PY{o}{=} \PY{n}{Path}\PY{o}{.}\PY{n}{cwd}\PY{p}{(}\PY{p}{)} \PY{o}{/} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data}\PY{l+s+s1}{\PYZsq{}}
+    
+\PY{c+c1}{\PYZsh{} Sprawdzenie czy katalog istnieje}
+\PY{k}{if} \PY{o+ow}{not} \PY{n}{DATA\PYZus{}DIR}\PY{o}{.}\PY{n}{exists}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{k}{raise} \PY{n+ne}{FileNotFoundError}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Directory does not exist: }\PY{l+s+si}{\PYZob{}}\PY{n}{DATA\PYZus{}DIR}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Looking for CSV files in: }\PY{l+s+si}{\PYZob{}}\PY{n}{DATA\PYZus{}DIR}\PY{o}{.}\PY{n}{resolve}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{csv\PYZus{}files} \PY{o}{=} \PY{p}{[}\PY{n}{f} \PY{k}{for} \PY{n}{f} \PY{o+ow}{in} \PY{n}{DATA\PYZus{}DIR}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{apartments\PYZus{}pl\PYZus{}*.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{k}{if} \PY{n}{f}\PY{o}{.}\PY{n}{is\PYZus{}file}\PY{p}{(}\PY{p}{)} \PY{o+ow}{and} \PY{n}{f}\PY{o}{.}\PY{n}{suffix}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Sprawdzenie czy znaleziono pliki CSV}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Found }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{len}\PY{p}{(}\PY{n}{csv\PYZus{}files}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ CSV files:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{f} \PY{o+ow}{in} \PY{n}{csv\PYZus{}files}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ \PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{f}\PY{o}{.}\PY{n}{name}\PY{p}{)}
+\PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{csv\PYZus{}files}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+    \PY{k}{raise} \PY{n+ne}{FileNotFoundError}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{No CSV files found in }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{DATA\PYZus{}DIR}\PY{o}{.}\PY{n}{resolve}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Wczytywanie plików CSV do DataFrame}
+\PY{n}{df\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{file} \PY{o+ow}{in} \PY{n}{csv\PYZus{}files}\PY{p}{:}
+    \PY{k}{try}\PY{p}{:}
+        \PY{n}{df\PYZus{}list}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{file}\PY{p}{)}\PY{p}{)}
+    \PY{k}{except} \PY{n+ne}{Exception} \PY{k}{as} \PY{n}{e}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Error loading }\PY{l+s+si}{\PYZob{}}\PY{n}{file}\PY{o}{.}\PY{n}{name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{: }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{str}\PY{p}{(}\PY{n}{e}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{if} \PY{o+ow}{not} \PY{n}{df\PYZus{}list}\PY{p}{:}
+    \PY{k}{raise} \PY{n+ne}{RuntimeError}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{No valid CSV files loaded}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Łączenie wszystkich DataFrame w jeden}
+\PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{concat}\PY{p}{(}\PY{n}{df\PYZus{}list}\PY{p}{,} \PY{n}{ignore\PYZus{}index}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{sort}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Combined dataframe shape: }\PY{l+s+si}{\PYZob{}}\PY{n}{df}\PY{o}{.}\PY{n}{shape}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Looking for CSV files in: C:\textbackslash{}Users\textbackslash{}olale\textbackslash{}Desktop\textbackslash{}PG\textbackslash{}ML\textbackslash{}ML\_Project\textbackslash{}data
+Found 11 CSV files:
+ - apartments\_pl\_2023\_08.csv
+ - apartments\_pl\_2023\_09.csv
+ - apartments\_pl\_2023\_10.csv
+ - apartments\_pl\_2023\_11.csv
+ - apartments\_pl\_2023\_12.csv
+ - apartments\_pl\_2024\_01.csv
+ - apartments\_pl\_2024\_02.csv
+ - apartments\_pl\_2024\_03.csv
+ - apartments\_pl\_2024\_04.csv
+ - apartments\_pl\_2024\_05.csv
+ - apartments\_pl\_2024\_06.csv
+Combined dataframe shape: (195568, 28)
+    \end{Verbatim}
+
+    \subsection{Czyszczenie i porządkowanie
+danych}\label{czyszczenie-i-porzux105dkowanie-danych}
+
+Zaczynamy od podstawowych działąń na datasecie, typu sprawdzenie danych,
+kolumn, statystyk opisowych, unikalnych wartości i zduplikowanych
+obserwacji.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Diagnostyka danych}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} Podstawowe informacje o danych \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} Informacje o kolumnach \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} Statystyki \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} Unikalne wartości \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{nunique}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{ascending}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Identyfikacja powtarzających się wartości i ich usunięcie}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} Identyfikacja powtarzających się wartości \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{duplicates} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{duplicated}\PY{p}{(}\PY{n}{subset}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Liczba zduplikowanych wierszy: }\PY{l+s+si}{\PYZob{}}\PY{n}{duplicates}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{if} \PY{n}{duplicates} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Usuwanie zduplikowanych wierszy...}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{df} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{drop\PYZus{}duplicates}\PY{p}{(}\PY{n}{subset}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{df}\PY{o}{.}\PY{n}{duplicated}\PY{p}{(}\PY{n}{subset}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Dane po usunięciu duplikatów: }\PY{l+s+si}{\PYZob{}}\PY{n}{df}\PY{o}{.}\PY{n}{shape}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+
+\PY{c+c1}{\PYZsh{} Analiza braków danych}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZhy{}\PYZhy{}\PYZhy{} Analiza brakujących danych \PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{missing\PYZus{}percent} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{isnull}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{ascending}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)} \PY{o}{*} \PY{l+m+mi}{100}
+\PY{n}{missing\PYZus{}percent} \PY{o}{=} \PY{n}{missing\PYZus{}percent}\PY{p}{[}\PY{n}{missing\PYZus{}percent} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{missing\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{\PYZob{}}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Liczba braków}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{df}\PY{o}{.}\PY{n}{isnull}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{missing\PYZus{}percent}\PY{o}{.}\PY{n}{index}\PY{p}{]}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Rozkład procentowy braków}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{missing\PYZus{}percent}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{missing\PYZus{}df}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Wizualizacja braków danych za pomocą biblioteki missingno}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{msno}\PY{o}{.}\PY{n}{matrix}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Missing Data Matrix}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Wizualizacja braków danych}
+\PY{n}{missing\PYZus{}percent\PYZus{}sorted} \PY{o}{=} \PY{p}{(}
+    \PY{n}{missing\PYZus{}percent}\PY{p}{[}\PY{n}{missing\PYZus{}percent} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{]}
+    \PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{ascending}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{bars} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{barh}\PY{p}{(}
+    \PY{n}{missing\PYZus{}percent\PYZus{}sorted}\PY{o}{.}\PY{n}{index}\PY{p}{,}
+    \PY{n}{missing\PYZus{}percent\PYZus{}sorted}\PY{o}{.}\PY{n}{values}\PY{p}{,}
+    \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{steelblue}\PY{l+s+s1}{\PYZsq{}}
+\PY{p}{)}
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Procent braków danych w kolumnach}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Procent braków (}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Kolumny}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{invert\PYZus{}yaxis}\PY{p}{(}\PY{p}{)}                                     
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlim}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{missing\PYZus{}percent\PYZus{}sorted}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)} \PY{o}{*} \PY{l+m+mf}{1.15}\PY{p}{)}
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{bar\PYZus{}label}\PY{p}{(}
+    \PY{n}{bars}\PY{p}{,}
+    \PY{n}{labels}\PY{o}{=}\PY{p}{[}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{v}\PY{l+s+si}{:}\PY{l+s+s1}{.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZsq{}} \PY{k}{for} \PY{n}{v} \PY{o+ow}{in} \PY{n}{missing\PYZus{}percent\PYZus{}sorted}\PY{o}{.}\PY{n}{values}\PY{p}{]}\PY{p}{,}
+    \PY{n}{padding}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,}
+    \PY{n}{label\PYZus{}type}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{edge}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{9}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+--- Podstawowe informacje o danych ---
+                                 id      city          type  squareMeters  \textbackslash{}
+0  f8524536d4b09a0c8ccc0197ec9d7bde  szczecin  blockOfFlats         63.00
+1  accbe77d4b360fea9735f138a50608dd  szczecin  blockOfFlats         36.00
+2  8373aa373dbc3fe7ca3b7434166b8766  szczecin      tenement         73.02
+3  0a68cd14c44ec5140143ece75d739535  szczecin      tenement         87.60
+4  f66320e153c2441edc0fe293b54c8aeb  szczecin  blockOfFlats         66.00
+
+   rooms  floor  floorCount  buildYear   latitude  longitude  {\ldots}  \textbackslash{}
+0    3.0    4.0        10.0     1980.0  53.378933  14.625296  {\ldots}
+1    2.0    8.0        10.0        NaN  53.442692  14.559690  {\ldots}
+2    3.0    2.0         3.0        NaN  53.452222  14.553333  {\ldots}
+3    3.0    2.0         3.0        NaN  53.435100  14.532900  {\ldots}
+4    3.0    1.0         3.0        NaN  53.410278  14.503611  {\ldots}
+
+   pharmacyDistance    ownership  buildingMaterial  condition  \textbackslash{}
+0             0.413  condominium      concreteSlab        NaN
+1             0.205  cooperative      concreteSlab        NaN
+2             0.280  condominium             brick        NaN
+3             0.087  condominium             brick        NaN
+4             0.514  condominium               NaN        NaN
+
+   hasParkingSpace  hasBalcony  hasElevator  hasSecurity  hasStorageRoom  \textbackslash{}
+0              yes         yes          yes           no             yes
+1               no         yes          yes           no             yes
+2               no          no           no           no              no
+3              yes         yes           no           no             yes
+4               no          no           no           no              no
+
+    price
+0  415000
+1  395995
+2  565000
+3  640000
+4  759000
+
+[5 rows x 28 columns]
+
+--- Informacje o kolumnach ---
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 195568 entries, 0 to 195567
+Data columns (total 28 columns):
+ \#   Column                Non-Null Count   Dtype
+---  ------                --------------   -----
+ 0   id                    195568 non-null  object
+ 1   city                  195568 non-null  object
+ 2   type                  153307 non-null  object
+ 3   squareMeters          195568 non-null  float64
+ 4   rooms                 195568 non-null  float64
+ 5   floor                 160974 non-null  float64
+ 6   floorCount            193185 non-null  float64
+ 7   buildYear             163352 non-null  float64
+ 8   latitude              195568 non-null  float64
+ 9   longitude             195568 non-null  float64
+ 10  centreDistance        195568 non-null  float64
+ 11  poiCount              195568 non-null  float64
+ 12  schoolDistance        195400 non-null  float64
+ 13  clinicDistance        194840 non-null  float64
+ 14  postOfficeDistance    195320 non-null  float64
+ 15  kindergartenDistance  195361 non-null  float64
+ 16  restaurantDistance    195089 non-null  float64
+ 17  collegeDistance       190132 non-null  float64
+ 18  pharmacyDistance      195291 non-null  float64
+ 19  ownership             195568 non-null  object
+ 20  buildingMaterial      118186 non-null  object
+ 21  condition             49261 non-null   object
+ 22  hasParkingSpace       195568 non-null  object
+ 23  hasBalcony            195568 non-null  object
+ 24  hasElevator           185866 non-null  object
+ 25  hasSecurity           195568 non-null  object
+ 26  hasStorageRoom        195568 non-null  object
+ 27  price                 195568 non-null  int64
+dtypes: float64(16), int64(1), object(11)
+memory usage: 41.8+ MB
+None
+
+--- Statystyki ---
+        squareMeters          rooms          floor     floorCount  \textbackslash{}
+count  195568.000000  195568.000000  160974.000000  193185.000000
+mean       58.697667       2.679222       3.332414       5.309113
+std        21.407206       0.915024       2.531684       3.312234
+min        25.000000       1.000000       1.000000       1.000000
+25\%        44.000000       2.000000       2.000000       3.000000
+50\%        54.600000       3.000000       3.000000       4.000000
+75\%        68.550000       3.000000       4.000000       6.000000
+max       150.000000       6.000000      29.000000      29.000000
+
+           buildYear       latitude      longitude  centreDistance  \textbackslash{}
+count  163352.000000  195568.000000  195568.000000   195568.000000
+mean     1985.976346      52.026288      19.465989        4.351114
+std        33.812810       1.335275       1.783264        2.835764
+min      1850.000000      49.978999      14.447100        0.010000
+25\%      1967.000000      51.108796      18.523270        2.010000
+50\%      1994.000000      52.194596      19.899434        3.980000
+75\%      2016.000000      52.409006      20.989907        6.150000
+max      2024.000000      54.606460      23.208873       16.940000
+
+            poiCount  schoolDistance  clinicDistance  postOfficeDistance  \textbackslash{}
+count  195568.000000   195400.000000   194840.000000       195320.000000
+mean       20.672037        0.412651        0.970287            0.516340
+std        24.325708        0.464193        0.888884            0.498013
+min         0.000000        0.002000        0.001000            0.001000
+25\%         7.000000        0.176000        0.356000            0.239000
+50\%        14.000000        0.290000        0.676000            0.393000
+75\%        24.000000        0.468000        1.237000            0.623000
+max       212.000000        4.946000        4.999000            4.970000
+
+       kindergartenDistance  restaurantDistance  collegeDistance  \textbackslash{}
+count         195361.000000       195089.000000     190132.00000
+mean               0.367560            0.345257          1.44327
+std                0.444673            0.463510          1.10457
+min                0.001000            0.001000          0.00400
+25\%                0.156000            0.114000          0.57700
+50\%                0.262000            0.229000          1.12000
+75\%                0.416000            0.409000          2.05500
+max                4.961000            4.985000          5.00000
+
+       pharmacyDistance         price
+count     195291.000000  1.955680e+05
+mean           0.358114  7.841833e+05
+std            0.457679  4.097092e+05
+min            0.001000  1.500000e+05
+25\%            0.142000  5.200000e+05
+50\%            0.239000  6.990000e+05
+75\%            0.406000  9.300000e+05
+max            4.992000  3.250000e+06
+
+--- Unikalne wartości ---
+id                      92967
+longitude               49315
+latitude                47484
+price                    8092
+squareMeters             7201
+collegeDistance          4825
+clinicDistance           4282
+postOfficeDistance       2713
+schoolDistance           2537
+pharmacyDistance         2446
+restaurantDistance       2437
+kindergartenDistance     2342
+centreDistance           1489
+poiCount                  196
+buildYear                 166
+floorCount                 29
+floor                      27
+city                       15
+rooms                       6
+type                        3
+ownership                   3
+buildingMaterial            2
+condition                   2
+hasParkingSpace             2
+hasBalcony                  2
+hasElevator                 2
+hasSecurity                 2
+hasStorageRoom              2
+dtype: int64
+
+--- Identyfikacja powtarzających się wartości ---
+Liczba zduplikowanych wierszy: 102601
+Usuwanie zduplikowanych wierszy{\ldots}
+Dane po usunięciu duplikatów: (92967, 28)
+
+--- Analiza brakujących danych ---
+                      Liczba braków  Rozkład procentowy braków
+condition                     69914                      75.20
+buildingMaterial              39179                      42.14
+type                          19792                      21.29
+floor                         15984                      17.19
+buildYear                     15641                      16.82
+hasElevator                    4448                       4.78
+collegeDistance                2492                       2.68
+floorCount                     1082                       1.16
+clinicDistance                  333                       0.36
+restaurantDistance              226                       0.24
+pharmacyDistance                128                       0.14
+postOfficeDistance               99                       0.11
+kindergartenDistance             85                       0.09
+schoolDistance                   60                       0.06
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+C:\textbackslash{}Users\textbackslash{}olale\textbackslash{}AppData\textbackslash{}Local\textbackslash{}Temp\textbackslash{}ipykernel\_12048\textbackslash{}731635470.py:36: UserWarning:
+This figure includes Axes that are not compatible with tight\_layout, so results
+might be incorrect.
+  plt.tight\_layout()
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+<Figure size 1200x600 with 0 Axes>
+    \end{Verbatim}
+
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Analiza_mieszkan_Final_files/Analiza_mieszkan_Final_6_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Analiza_mieszkan_Final_files/Analiza_mieszkan_Final_6_4.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Połączony zbiór danych zawiera ok. 196 tys. wierszy, a po usunięciu
+duplikatów zostaje niecałe 93 tys. wierszy (spadek o 52\%). Jest to
+działanie zamierzone, gdyż interesuje nas analiza danych dotyczących
+mieszkań, a nie samych ogłoszeń, więc potrzebujemy tylko jednej
+obserwacji na mieszkanie.
+
+Jak widać na powyższych wizualizacjach, brakuje sporo danych, zwłaszcza
+w kolumnach `condition' (prawie 75\%) oraz `buildingMaterial' (ponad
+42\%). Rozważamy ich usunięcie, a w przypadku kolumn z mniejszą liczbą
+braków - wypełnienie metodą KNN-imputacji osobno dla każdego miasta
+(KNNImputer, k=5), co pozwoli zachować większą liczbę pełnych obserwacji
+niż przy prostym uzupełnianiu medianą dla całej populacji.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Strategia imputacji i obsługa braków}
+\PY{c+c1}{\PYZsh{} Usunięcie kolumn z \PYZgt{}75\PYZpc{} braków}
+\PY{n}{cols\PYZus{}to\PYZus{}drop} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{condition}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{df} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{n}{cols\PYZus{}to\PYZus{}drop}\PY{p}{,} \PY{n}{errors}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ignore}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 1. KNNImputer do braków liczbowych}
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{knn\PYZus{}impute\PYZus{}by\PYZus{}city}\PY{p}{(}\PY{n}{df}\PY{p}{,} \PY{n}{numeric\PYZus{}cols}\PY{p}{)}\PY{p}{:}
+    \PY{n}{frames} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{city}\PY{p}{,} \PY{n}{group} \PY{o+ow}{in} \PY{n}{df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{city}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{:}
+        \PY{n}{imputer} \PY{o}{=} \PY{n}{KNNImputer}\PY{p}{(}\PY{n}{n\PYZus{}neighbors}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{)}
+        \PY{n}{group\PYZus{}num} \PY{o}{=} \PY{n}{group}\PY{p}{[}\PY{n}{numeric\PYZus{}cols}\PY{p}{]}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+        \PY{n}{imputed} \PY{o}{=} \PY{n}{imputer}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{group\PYZus{}num}\PY{p}{)}
+        \PY{n}{group}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{numeric\PYZus{}cols}\PY{p}{]} \PY{o}{=} \PY{n}{imputed}
+        \PY{n}{frames}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{group}\PY{p}{)}
+    \PY{k}{return} \PY{n}{pd}\PY{o}{.}\PY{n}{concat}\PY{p}{(}\PY{n}{frames}\PY{p}{)}
+
+\PY{n}{numeric\PYZus{}cols} \PY{o}{=} \PY{p}{[}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{floor}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{floorCount}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{buildYear}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{schoolDistance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{clinicDistance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{postOfficeDistance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{kindergartenDistance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{restaurantDistance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{collegeDistance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pharmacyDistance}\PY{l+s+s1}{\PYZsq{}}
+\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Zamiana kolumn na liczby}
+\PY{k}{for} \PY{n}{col} \PY{o+ow}{in} \PY{n}{numeric\PYZus{}cols}\PY{p}{:}
+    \PY{k}{if} \PY{n}{col} \PY{o+ow}{in} \PY{n}{df}\PY{o}{.}\PY{n}{columns}\PY{p}{:}
+        \PY{n}{df}\PY{p}{[}\PY{n}{col}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}numeric}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{n}{col}\PY{p}{]}\PY{p}{,} \PY{n}{errors}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{coerce}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Imputacja braków za pomocą KNNImputer}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{df} \PY{o}{=} \PY{n}{knn\PYZus{}impute\PYZus{}by\PYZus{}city}\PY{p}{(}\PY{n}{df}\PY{p}{,} \PY{n}{numeric\PYZus{}cols}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} 2. Imputacja modą dla zmiennych kategorycznych}
+\PY{n}{cat\PYZus{}cols} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{buildingMaterial}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hasElevator}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{k}{for} \PY{n}{col} \PY{o+ow}{in} \PY{n}{cat\PYZus{}cols}\PY{p}{:}
+    \PY{k}{if} \PY{n}{col} \PY{o+ow}{in} \PY{n}{df}\PY{o}{.}\PY{n}{columns}\PY{p}{:}
+        \PY{n}{mode\PYZus{}val} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{n}{col}\PY{p}{]}\PY{o}{.}\PY{n}{mode}\PY{p}{(}\PY{n}{dropna}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}      \PY{c+c1}{\PYZsh{} dominująca wartość}
+        \PY{n}{df}\PY{p}{[}\PY{n}{col}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{n}{col}\PY{p}{]}\PY{o}{.}\PY{n}{fillna}\PY{p}{(}\PY{n}{mode\PYZus{}val}\PY{p}{)}           \PY{c+c1}{\PYZsh{} brak chained‑assignment}
+
+\PY{c+c1}{\PYZsh{} 3. Usunięcie pozostałych braków}
+\PY{n}{before\PYZus{}drop} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\PY{n}{df} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}
+\PY{n}{after\PYZus{}drop}  \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Usunięto }\PY{l+s+si}{\PYZob{}}\PY{n}{before\PYZus{}drop}\PY{+w}{ }\PY{o}{\PYZhy{}}\PY{+w}{ }\PY{n}{after\PYZus{}drop}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ wierszy }\PY{l+s+s2}{\PYZdq{}}
+      \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{(}\PY{l+s+si}{\PYZob{}}\PY{p}{(}\PY{n}{before\PYZus{}drop}\PY{+w}{ }\PY{o}{\PYZhy{}}\PY{+w}{ }\PY{n}{after\PYZus{}drop}\PY{p}{)}\PY{+w}{ }\PY{o}{/}\PY{+w}{ }\PY{n}{before\PYZus{}drop}\PY{l+s+si}{:}\PY{l+s+s2}{.2\PYZpc{}}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Imputuję braki za pomocą KNNImputer
+Usunięto 0 wierszy (0.00\%)
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Sprawdzenie, czy zostały jakieś braki}
+\PY{n}{missing\PYZus{}after} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{isnull}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+\PY{k}{if} \PY{n}{missing\PYZus{}after} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Uwaga: W datasecie wciąż brakuje }\PY{l+s+si}{\PYZob{}}\PY{n}{missing\PYZus{}after}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ wartości.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Wizualizacja braków danych za pomocą biblioteki missingno po imputacji}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{msno}\PY{o}{.}\PY{n}{matrix}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Wykres braków danych po imputacji}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+C:\textbackslash{}Users\textbackslash{}olale\textbackslash{}AppData\textbackslash{}Local\textbackslash{}Temp\textbackslash{}ipykernel\_12048\textbackslash{}2023313051.py:9: UserWarning:
+This figure includes Axes that are not compatible with tight\_layout, so results
+might be incorrect.
+  plt.tight\_layout()
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+<Figure size 1200x600 with 0 Axes>
+    \end{Verbatim}
+
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Analiza_mieszkan_Final_files/Analiza_mieszkan_Final_9_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Ceny mieszkań wykazują dużą zmienność i często posiadają wartości
+odstające (tzw. outliery), które mogą zaburzać wyniki analiz. W celu
+lepszego zrozumienia rozkładu cen, wykonaliśmy histogram oraz wykres
+typu boxplot przedstawiający pełen zakres zmienności.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{32}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Obserwacje odstające}
+
+\PY{c+c1}{\PYZsh{} Histogram cen mieszkań}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{fmt} \PY{o}{=} \PY{n}{ticker}\PY{o}{.}\PY{n}{FuncFormatter}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{,} \PY{n}{pos}\PY{p}{:} \PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{x}\PY{o}{/}\PY{l+m+mi}{1000}\PY{l+s+si}{:}\PY{l+s+s1}{.0f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ tys.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{sns}\PY{o}{.}\PY{n}{histplot}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{kde}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{ax}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{skyblue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Histogram cen mieszkań}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cena (PLN)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Liczba mieszkań}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{xaxis}\PY{o}{.}\PY{n}{set\PYZus{}major\PYZus{}formatter}\PY{p}{(}\PY{n}{fmt}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Boxplot ceny mieszkań}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{fmt} \PY{o}{=} \PY{n}{ticker}\PY{o}{.}\PY{n}{FuncFormatter}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{,} \PY{n}{pos}\PY{p}{:} \PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{x}\PY{o}{/}\PY{l+m+mi}{1000}\PY{l+s+si}{:}\PY{l+s+s1}{.0f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ tys.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{sns}\PY{o}{.}\PY{n}{boxplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{ax}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{skyblue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Rozkład cen mieszkań}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cena (PLN)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{xaxis}\PY{o}{.}\PY{n}{set\PYZus{}major\PYZus{}formatter}\PY{p}{(}\PY{n}{fmt}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Analiza_mieszkan_Final_files/Analiza_mieszkan_Final_11_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Analiza_mieszkan_Final_files/Analiza_mieszkan_Final_11_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Na boxplocie możemy dostrzec długi ogon prawostronny. Ze względu na
+obecność wartości skrajnie wysokich lub niskich, ograniczono dane do
+zakresu między 1. a 95. percentylem rozkładu cen. Takie podejście
+pozwala zachować 94\% głównych obserwacji, eliminując przypadki
+odstające, które mogłyby zniekształcić wnioski statystyczne i
+wizualizacje.
+
+Dla poprawy symetrii rozkładu danych i ewentualnych analiz
+statystycznych można rozważyć transformację zmiennej `price', np.
+poprzez zastosowanie logarytmu.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Sprawdzenie liczby obserwacji przed filtrowaniem}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Liczba obserwacji: }\PY{l+s+si}{\PYZob{}}\PY{n}{df}\PY{o}{.}\PY{n}{shape}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Ustawienia percentyli}
+\PY{n}{lower\PYZus{}p} \PY{o}{=} \PY{l+m+mf}{0.01}
+\PY{n}{upper\PYZus{}p} \PY{o}{=} \PY{l+m+mf}{0.95}
+
+\PY{c+c1}{\PYZsh{} Przefiltrowanie outlierów osobno dla każdego miasta}
+\PY{n}{filtered\PYZus{}df\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{city}\PY{p}{,} \PY{n}{group} \PY{o+ow}{in} \PY{n}{df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{city}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{:}
+    \PY{n}{p\PYZus{}low} \PY{o}{=} \PY{n}{group}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{quantile}\PY{p}{(}\PY{n}{lower\PYZus{}p}\PY{p}{)}
+    \PY{n}{p\PYZus{}high} \PY{o}{=} \PY{n}{group}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{quantile}\PY{p}{(}\PY{n}{upper\PYZus{}p}\PY{p}{)}
+    \PY{n}{filtered} \PY{o}{=} \PY{n}{group}\PY{p}{[}\PY{p}{(}\PY{n}{group}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{p\PYZus{}low}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{group}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{p\PYZus{}high}\PY{p}{)}\PY{p}{]}
+    \PY{n}{filtered\PYZus{}df\PYZus{}list}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{filtered}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{city}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{: }\PY{l+s+si}{\PYZob{}}\PY{n}{group}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ → }\PY{l+s+si}{\PYZob{}}\PY{n}{filtered}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ (usunięto }\PY{l+s+si}{\PYZob{}}\PY{n}{group}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{+w}{ }\PY{o}{\PYZhy{}}\PY{+w}{ }\PY{n}{filtered}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Połączenie danych po odfiltrowaniu}
+\PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{concat}\PY{p}{(}\PY{n}{filtered\PYZus{}df\PYZus{}list}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Liczba obserwacji po usunięciu wartości odstających: }\PY{l+s+si}{\PYZob{}}\PY{n}{df}\PY{o}{.}\PY{n}{shape}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Liczba obserwacji: (92967, 27)
+bialystok: 1017 → 955 (usunięto 62)
+bydgoszcz: 3627 → 3414 (usunięto 213)
+czestochowa: 1242 → 1171 (usunięto 71)
+gdansk: 8244 → 7749 (usunięto 495)
+gdynia: 3569 → 3354 (usunięto 215)
+katowice: 2397 → 2258 (usunięto 139)
+krakow: 14186 → 13337 (usunięto 849)
+lodz: 7073 → 6657 (usunięto 416)
+lublin: 2299 → 2162 (usunięto 137)
+poznan: 3639 → 3431 (usunięto 208)
+radom: 845 → 794 (usunięto 51)
+rzeszow: 762 → 715 (usunięto 47)
+szczecin: 2487 → 2340 (usunięto 147)
+warszawa: 31982 → 30076 (usunięto 1906)
+wroclaw: 9598 → 9030 (usunięto 568)
+Liczba obserwacji po usunięciu wartości odstających: (87443, 27)
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Histogram cen po oczyszczeniu}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{fmt} \PY{o}{=} \PY{n}{ticker}\PY{o}{.}\PY{n}{FuncFormatter}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{,} \PY{n}{pos}\PY{p}{:} \PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{x}\PY{o}{/}\PY{l+m+mi}{1000}\PY{l+s+si}{:}\PY{l+s+s1}{.0f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ tys.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{sns}\PY{o}{.}\PY{n}{histplot}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{kde}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{ax}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{skyblue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Histogram cen mieszkań po usunięciu wartości odstających – osobno dla każdego miasta}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cena (PLN)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Liczba mieszkań}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{xaxis}\PY{o}{.}\PY{n}{set\PYZus{}major\PYZus{}formatter}\PY{p}{(}\PY{n}{fmt}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlim}\PY{p}{(}\PY{n}{left}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Boxplot po oczyszczeniu}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{sns}\PY{o}{.}\PY{n}{boxplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{ax}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{skyblue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Rozkład cen mieszkań po usunięciu wartości odstających}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cena (PLN)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{xaxis}\PY{o}{.}\PY{n}{set\PYZus{}major\PYZus{}formatter}\PY{p}{(}\PY{n}{fmt}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Analiza_mieszkan_Final_files/Analiza_mieszkan_Final_14_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Analiza_mieszkan_Final_files/Analiza_mieszkan_Final_14_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Ze względu na duże różnice cen mieszkań pomiędzy miastami (np. Warszawa
+vs.~Rzeszów), zdecydowaliśmy się na bardziej precyzyjne podejście do
+filtrowania wartości odstających -- zrobiliśmy to \textbf{osobno dla
+każdego miasta}.
+
+Dla każdej lokalizacji odcięliśmy 1\% najtańszych oraz 5\% najdroższych
+mieszkań (czyli zastosowaliśmy 1. i 95. percentyl lokalnie). Taki zabieg
+pozwala zachować reprezentatywność danych, a jednocześnie usuwa
+ekstremalne przypadki, które mogłyby zaburzyć analizę.
+
+Dzięki temu:
+
+\begin{itemize}
+\tightlist
+\item
+  Unikamy błędu polegającego na wspólnym usunięciu danych według jednego
+  progu cenowego.
+\item
+  Zachowujemy strukturę rynków lokalnych.
+\item
+  Histogram rozkładu cen staje się bardziej symetryczny.
+\end{itemize}
+
+\emph{Uwaga:} W wyniku tej operacji liczba obserwacji zmniejszyła się z
+\textasciitilde92\,967 do \textasciitilde83\,000. Pozostałe dane dobrze
+reprezentują lokalne rynki mieszkań -- bez skrajnych przypadków ani
+luksusowych nieruchomości.
+
+Po oczyszczeniu zbioru danych zaobserwowano zmianę rozkładu cen --
+zredukowano liczbę ekstremalnych wartości, dzięki czemu analiza staje
+się bardziej reprezentatywna, a histogram staje się wyraźnie mniej
+skośny, choć wciąż lekko prawostronny. Niestety, ale wykluczenie części
+obserwacji może prowadzić do utraty niektórych informacji, np. o
+nieruchomościach luksusowych. My jednak skupiamy się na segmencie
+mieszkań przeznaczonych dla zwykłego ``Kowalskiego''.
+
+    \subsection{WIZUALIZACJE}\label{wizualizacje}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Wykres 1: Rozkład cen mieszkań w miastach}
+\PY{n}{city\PYZus{}order} \PY{o}{=} \PY{p}{(}
+    \PY{n}{df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{city}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+      \PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{p}{)}
+      \PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{ascending}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+      \PY{o}{.}\PY{n}{index}
+\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{sns}\PY{o}{.}\PY{n}{boxplot}\PY{p}{(}
+    \PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{city}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{y}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{data}\PY{o}{=}\PY{n}{df}\PY{p}{,}
+    \PY{n}{order}\PY{o}{=}\PY{n}{city\PYZus{}order}\PY{p}{,}
+    \PY{n}{palette}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Set3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{flierprops}\PY{o}{=}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{markersize}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{markerfacecolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{grey}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.4}\PY{p}{)}
+\PY{p}{)}
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Rozkład cen mieszkań w największych miastach Polski}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Miasto}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cena (PLN)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{xaxis}\PY{o}{.}\PY{n}{set\PYZus{}tick\PYZus{}params}\PY{p}{(}\PY{n}{rotation}\PY{o}{=}\PY{l+m+mi}{30}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{yaxis}\PY{o}{.}\PY{n}{set\PYZus{}major\PYZus{}formatter}\PY{p}{(}\PY{n}{ticker}\PY{o}{.}\PY{n}{FuncFormatter}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{,} \PY{n}{pos}\PY{p}{:} \PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{x}\PY{o}{/}\PY{l+m+mi}{1000}\PY{l+s+si}{:}\PY{l+s+s1}{.0f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ tys.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+C:\textbackslash{}Users\textbackslash{}olale\textbackslash{}AppData\textbackslash{}Local\textbackslash{}Temp\textbackslash{}ipykernel\_12048\textbackslash{}2364514622.py:11:
+FutureWarning:
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in
+v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same
+effect.
+
+  sns.boxplot(
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Analiza_mieszkan_Final_files/Analiza_mieszkan_Final_17_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Rozkład cen mieszkań w największych miastach
+Polski}\label{rozkux142ad-cen-mieszkaux144-w-najwiux119kszych-miastach-polski}
+
+Boxplot jasno pokazuje duże zróżnicowanie mediany cen między miastami:
+Warszawa zdecydowanie prowadzi, Rzeszów, Lublin i Szczecin plasują się w
+środku stawki, natomiast najniższą medianę cen możemy dostrzec w
+Radomimu i Częstochowie. Rozstępy między kwartylami są szersze w
+metropoliach, co świadczy o bardziej zróżnicowanym segmencie rynkowym.
+Warto zauważyć, że nawet po odcięciu 5\,\% skrajnych cen, w Warszawie,
+Krakowie, Gdańsku i Gdyni widoczne są pojedyncze obserwacje powyżej
+1,2\,mln PLN, co odpowiada segmentowi premium.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Wykres 2: Zależność ceny od metrażu}
+\PY{c+c1}{\PYZsh{} Sample do wykresu rozrzutu, cały zbiór do linii regresji i korelacji}
+\PY{n}{scatter\PYZus{}sample} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{sample}\PY{p}{(}\PY{l+m+mi}{6000}\PY{p}{,} \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{42}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Współczynnik korelacji (Pearson)}
+\PY{n}{corr} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{squareMeters}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Pearson r = }\PY{l+s+si}{\PYZob{}}\PY{n}{corr}\PY{l+s+si}{:}\PY{l+s+s2}{.3f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{13}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{sns}\PY{o}{.}\PY{n}{scatterplot}\PY{p}{(}
+    \PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{squareMeters}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{data}\PY{o}{=}\PY{n}{scatter\PYZus{}sample}\PY{p}{,}
+    \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.35}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{royalblue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{ax}
+\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Linia trendu (regresja liniowa)}
+\PY{n}{sns}\PY{o}{.}\PY{n}{regplot}\PY{p}{(}
+    \PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{squareMeters}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{data}\PY{o}{=}\PY{n}{df}\PY{p}{,}
+    \PY{n}{scatter}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{ax}\PY{p}{,}
+    \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{darkorange}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{line\PYZus{}kws}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{linestyle}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}
+\PY{p}{)}
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Zależność ceny mieszkania od metrażu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Metraż (m²)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cena (PLN)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{yaxis}\PY{o}{.}\PY{n}{set\PYZus{}major\PYZus{}formatter}\PY{p}{(}\PY{n}{ticker}\PY{o}{.}\PY{n}{FuncFormatter}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{,} \PY{n}{pos}\PY{p}{:} \PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{x}\PY{o}{/}\PY{l+m+mi}{1000}\PY{l+s+si}{:}\PY{l+s+s1}{.0f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ tys.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.4}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Ewentualnie skala log10 na osi Y}
+\PY{c+c1}{\PYZsh{} ax.set\PYZus{}yscale(\PYZsq{}log\PYZsq{})}
+
+\PY{c+c1}{\PYZsh{} Podpis korelacji w prawym górnym rogu}
+\PY{n}{ax}\PY{o}{.}\PY{n}{text}\PY{p}{(}
+    \PY{l+m+mf}{0.97}\PY{p}{,} \PY{l+m+mf}{0.95}\PY{p}{,}
+    \PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pearson r = }\PY{l+s+si}{\PYZob{}}\PY{n}{corr}\PY{l+s+si}{:}\PY{l+s+s1}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{transform}\PY{o}{=}\PY{n}{ax}\PY{o}{.}\PY{n}{transAxes}\PY{p}{,}
+    \PY{n}{ha}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{right}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{va}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{top}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{11}\PY{p}{,} \PY{n}{bbox}\PY{o}{=}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{boxstyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{round,pad=0.3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{white}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ec}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.7}\PY{p}{)}
+\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Pearson r = 0.563
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Analiza_mieszkan_Final_files/Analiza_mieszkan_Final_19_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Zależność ceny od
+metrażu}\label{zaleux17cnoux15bux107-ceny-od-metraux17cu}
+
+Wykres punktowy (na losowej próbce 6\,000 mieszkań) pokazuje wyraźną
+dodatnią korelację pomiędzy metrażem a ceną. Współczynnik
+\textbf{Pearsona r ≈\,0,5} wskazuje na silną zależność liniową --
+szczególnie przy większych metrażach widać rosnące zróżnicowanie cen.
+
+\textbf{Warto odnotować:} Mieszkania ≈\,40--60\,m² tworzą najbardziej
+gęsty „rdzeń'' rynku, a powyżej 80\,m² rozrzut cen znacząco rośnie, co
+może sugerować różne standardy wykończenia lub lokalizacje premium.
+
+Linia trendu (pomarańczowa, regresja liniowa) dobrze oddaje medianę
+zależności, lecz nie oddaje rosnącej wariancji dla dużych metraży.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{37}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Wykres 3: Wpływ liczby pokoi na cenę}
+\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rooms}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rooms}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{int}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Posortowana lista liczby pokoi (1..6)}
+\PY{n}{room\PYZus{}order} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rooms}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{sns}\PY{o}{.}\PY{n}{boxplot}\PY{p}{(}
+    \PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rooms}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{y}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{data}\PY{o}{=}\PY{n}{df}\PY{p}{,}
+    \PY{n}{order}\PY{o}{=}\PY{n}{room\PYZus{}order}\PY{p}{,}          
+    \PY{n}{palette}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{viridis}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}           
+    \PY{n}{ax}\PY{o}{=}\PY{n}{ax}
+\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Tytuły i opisy osi}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Wpływ liczby pokoi na cenę mieszkania}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Liczba pokoi}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cena (PLN)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{yaxis}\PY{o}{.}\PY{n}{set\PYZus{}major\PYZus{}formatter}\PY{p}{(}\PY{n}{ticker}\PY{o}{.}\PY{n}{FuncFormatter}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{,} \PY{n}{pos}\PY{p}{:} \PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{x}\PY{o}{/}\PY{l+m+mi}{1000}\PY{l+s+si}{:}\PY{l+s+s1}{.0f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ tys.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.4}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Dodanie etykiet mediany nad każdym boxem}
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{rooms} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{room\PYZus{}order}\PY{p}{)}\PY{p}{:}
+    \PY{n}{median\PYZus{}price} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rooms}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{n}{rooms}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{annotate}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{median\PYZus{}price}\PY{o}{/}\PY{l+m+mi}{1000}\PY{l+s+si}{:}\PY{l+s+s1}{.0f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{k}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{xy}\PY{o}{=}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{median\PYZus{}price}\PY{p}{)}\PY{p}{,}
+                \PY{n}{xytext}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{,} \PY{n}{textcoords}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{offset points}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                \PY{n}{ha}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{center}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{va}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bottom}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{black}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+C:\textbackslash{}Users\textbackslash{}olale\textbackslash{}AppData\textbackslash{}Local\textbackslash{}Temp\textbackslash{}ipykernel\_12048\textbackslash{}15196970.py:9: FutureWarning:
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in
+v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same
+effect.
+
+  sns.boxplot(
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Analiza_mieszkan_Final_files/Analiza_mieszkan_Final_21_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Wpływ liczby pokoi na cenę
+mieszkania}\label{wpux142yw-liczby-pokoi-na-cenux119-mieszkania}
+
+Liczba pokoi jest jednym z kluczowych czynników wpływających na cenę
+nieruchomości. Analiza boxplotów pokazuje wyraźny wzrost mediany cen
+wraz ze wzrostem liczby pokoi. Wśród mieszkań 2 i 3-pokojowych
+obserwujemy największą liczbę wartości odstających. Warto zauważyć, że
+rozpiętość cenowa rośnie wraz z liczbą pokoi. Zaskakujące jest, że
+najmniejsza różnica w medianie cem występuje między mieszkaniami
+4-pokojowymi (890 tys.) a 5-pokojowymi (poniżej 990 tys.)
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{39}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Wykres 4: Udział mieszkań z udogodnieniami}
+
+\PY{c+c1}{\PYZsh{} Kolumny udogodnień}
+\PY{n}{amenities} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hasParkingSpace}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hasBalcony}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hasElevator}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+             \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hasSecurity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hasStorageRoom}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Zamiana \PYZsq{}yes\PYZsq{}/\PYZsq{}no\PYZsq{} → 1/0}
+\PY{n}{amenity\PYZus{}counts} \PY{o}{=} \PY{p}{(}
+    \PY{n}{df}\PY{p}{[}\PY{n}{amenities}\PY{p}{]}
+      \PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{yes}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{no}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+m+mi}{0}\PY{p}{\PYZcb{}}\PY{p}{)}
+      \PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+      \PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{ascending}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Wykres}
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{amenity\PYZus{}counts}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{kind}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{barh}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{teal}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{ax}\PY{p}{)}
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Udział mieszkań z udogodnieniami}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Liczba mieszkań}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Udogodnienie}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{invert\PYZus{}yaxis}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Dodawanie etykiet procentowych}
+\PY{n}{total\PYZus{}flats} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{p}{(}\PY{n}{value}\PY{p}{,} \PY{n}{name}\PY{p}{)} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n+nb}{zip}\PY{p}{(}\PY{n}{amenity\PYZus{}counts}\PY{o}{.}\PY{n}{values}\PY{p}{,} \PY{n}{amenity\PYZus{}counts}\PY{o}{.}\PY{n}{index}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+    \PY{n}{pct} \PY{o}{=} \PY{n}{value} \PY{o}{/} \PY{n}{total\PYZus{}flats} \PY{o}{*} \PY{l+m+mi}{100}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{text}\PY{p}{(}\PY{n}{value} \PY{o}{+} \PY{n}{total\PYZus{}flats} \PY{o}{*} \PY{l+m+mf}{0.002}\PY{p}{,} \PY{n}{i}\PY{p}{,} \PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{pct}\PY{l+s+si}{:}\PY{l+s+s1}{.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{va}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{center}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+C:\textbackslash{}Users\textbackslash{}olale\textbackslash{}AppData\textbackslash{}Local\textbackslash{}Temp\textbackslash{}ipykernel\_12048\textbackslash{}422329188.py:10:
+FutureWarning: Downcasting behavior in `replace` is deprecated and will be
+removed in a future version. To retain the old behavior, explicitly call
+`result.infer\_objects(copy=False)`. To opt-in to the future behavior, set
+`pd.set\_option('future.no\_silent\_downcasting', True)`
+  .replace(\{'yes': 1, 'no': 0\})
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Analiza_mieszkan_Final_files/Analiza_mieszkan_Final_23_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Udział mieszkań wyposażonych w wybrane
+udogodnienia}\label{udziaux142-mieszkaux144-wyposaux17conych-w-wybrane-udogodnienia}
+
+Najczęściej spotykanym udogodnieniem jest \textbf{balkon} -- posiada go
+aż \textasciitilde58\% analizowanych mieszkań. Na kolejnych miejscach
+znajznajduje winda (ok.\,53\%) oraz komórka lokatorska (ok.\,45\%), co
+odzwierciedla przewagę bloków i apartamentowców w większych miastach.
+
+Z kolei \textbf{miejsce parkingowe} i \textbf{ochrona} występują
+rzadziej (ok. 26\% i\,10\,\%), gdyż są charakterystyczne głównie dla
+nowszych osiedli o podwyższonym standardzie.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{40}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Wykres 5: Wpływ odległości od centrum na cenę za metr kwadratowy}
+\PY{n}{df} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{squareMeters}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{]}                     
+\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price\PYZus{}per\PYZus{}m2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{/} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{squareMeters}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Scatter z kolorem wg miasta}
+\PY{n}{sample} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{sample}\PY{p}{(}\PY{l+m+mi}{6000}\PY{p}{,} \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{42}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{sns}\PY{o}{.}\PY{n}{scatterplot}\PY{p}{(}
+    \PY{n}{data}\PY{o}{=}\PY{n}{sample}\PY{p}{,}
+    \PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{centreDistance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{y}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price\PYZus{}per\PYZus{}m2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{hue}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{city}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{palette}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tab10}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.3}\PY{p}{,}
+    \PY{n}{ax}\PY{o}{=}\PY{n}{ax}
+\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Linia LOWESS (lokalnie wygładzona regresja)}
+\PY{n}{sns}\PY{o}{.}\PY{n}{regplot}\PY{p}{(}
+    \PY{n}{data}\PY{o}{=}\PY{n}{df}\PY{p}{,} \PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{centreDistance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price\PYZus{}per\PYZus{}m2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{scatter}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{lowess}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}
+    \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{darkorange}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{line\PYZus{}kws}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{linestyle}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{ax}
+\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Formatowanie osi}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Wpływ odległości od centrum na cenę za metr kwadratowy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Odległość od centrum (km)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cena za m² (PLN)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{yaxis}\PY{o}{.}\PY{n}{set\PYZus{}major\PYZus{}formatter}\PY{p}{(}\PY{n}{ticker}\PY{o}{.}\PY{n}{FuncFormatter}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{,} \PY{n}{pos}\PY{p}{:} \PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{x}\PY{o}{/}\PY{l+m+mi}{1000}\PY{l+s+si}{:}\PY{l+s+s1}{.0f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ tys.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.4}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{title}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Miasto}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{bbox\PYZus{}to\PYZus{}anchor}\PY{o}{=}\PY{p}{(}\PY{l+m+mf}{1.02}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,} \PY{n}{loc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{upper left}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Współczynnik korelacji}
+\PY{n}{pearson\PYZus{}r} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{centreDistance}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price\PYZus{}per\PYZus{}m2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{text}\PY{p}{(}\PY{l+m+mf}{0.97}\PY{p}{,} \PY{l+m+mf}{0.05}\PY{p}{,} \PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pearson r = }\PY{l+s+si}{\PYZob{}}\PY{n}{pearson\PYZus{}r}\PY{l+s+si}{:}\PY{l+s+s1}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+        \PY{n}{transform}\PY{o}{=}\PY{n}{ax}\PY{o}{.}\PY{n}{transAxes}\PY{p}{,} \PY{n}{ha}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{right}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{va}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bottom}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+        \PY{n}{bbox}\PY{o}{=}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{boxstyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{round,pad=0.3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{white}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ec}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.6}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Analiza_mieszkan_Final_files/Analiza_mieszkan_Final_25_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Wpływ odległości od centrum na cenę za metr
+kwadratowy}\label{wpux142yw-odlegux142oux15bci-od-centrum-na-cenux119-za-metr-kwadratowy}
+
+Wykres rozrzutu pokazuje relację między odległością od centrum miasta a
+ceną za metr kwadratowy mieszkania. Dane zostały dodatkowo pokolorowane
+według miasta. Współczynnik korelacji Pearsona wynosi r = 0.07, co
+oznacza bardzo słabą dodatnią korelację.
+
+Jest to dosć zaskakujące i Wbrew intuicji, gdyż brakuje wyraźnej
+zależności między odległością a ceną za m² -- możliwe, że wpływ
+lokalizacji ukryty pod innymi zmiennymi.
+
+Widoczny silny rozrzut cen na każdym poziomie odległości -- sugeruje, że
+sam dystans od centrum nie jest wystarczającym predyktorem ceny.
+
+Wykres daje ciekawy wgląd w złożoność rynku mieszkaniowego i wskazuje na
+potrzebę uwzględnienia dodatkowych cech w analizie.
+
+    \subsection{ANALIZA OPISOWA}\label{analiza-opisowa}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{41}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Analiza 1: Statystyki cen za metr kwadratowy według miast}
+\PY{n}{city\PYZus{}stats} \PY{o}{=} \PY{p}{(}
+    \PY{n}{df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{city}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price\PYZus{}per\PYZus{}m2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+      \PY{o}{.}\PY{n}{agg}\PY{p}{(}\PY{n}{mean}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mean}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{median}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{median}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{std}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{std}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{count}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+      \PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{by}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{median}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ascending}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Barplot mediany cena/m2}
+\PY{n}{city\PYZus{}stats\PYZus{}reset} \PY{o}{=} \PY{n}{city\PYZus{}stats}\PY{o}{.}\PY{n}{reset\PYZus{}index}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{14}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}
+\PY{n}{sns}\PY{o}{.}\PY{n}{barplot}\PY{p}{(}
+    \PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{city}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{median}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{data}\PY{o}{=}\PY{n}{city\PYZus{}stats\PYZus{}reset}\PY{p}{,}
+    \PY{n}{palette}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{light:\PYZsh{}5A9\PYZus{}r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{ax}\PY{o}{=}\PY{n}{ax}
+\PY{p}{)}
+
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Mediana cen za m² w największych miastach Polski}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Mediana ceny za m² (PLN)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{yaxis}\PY{o}{.}\PY{n}{set\PYZus{}major\PYZus{}formatter}\PY{p}{(}\PY{n}{ticker}\PY{o}{.}\PY{n}{FuncFormatter}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{,} \PY{n}{pos}\PY{p}{:} \PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{x}\PY{o}{/}\PY{l+m+mi}{1000}\PY{l+s+si}{:}\PY{l+s+s1}{.0f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ tys.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\PY{n}{ax}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.4}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Etykiety z wartością na końcach słupków}
+\PY{k}{for} \PY{n}{p} \PY{o+ow}{in} \PY{n}{ax}\PY{o}{.}\PY{n}{patches}\PY{p}{:}
+    \PY{n}{value} \PY{o}{=} \PY{n}{p}\PY{o}{.}\PY{n}{get\PYZus{}height}\PY{p}{(}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{annotate}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{value}\PY{o}{/}\PY{l+m+mi}{1000}\PY{l+s+si}{:}\PY{l+s+s1}{.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{k}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                \PY{n}{xy}\PY{o}{=}\PY{p}{(}\PY{n}{p}\PY{o}{.}\PY{n}{get\PYZus{}x}\PY{p}{(}\PY{p}{)} \PY{o}{+} \PY{n}{p}\PY{o}{.}\PY{n}{get\PYZus{}width}\PY{p}{(}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{value}\PY{p}{)}\PY{p}{,}
+                \PY{n}{xytext}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{,} \PY{n}{textcoords}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{offset points}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                \PY{n}{ha}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{center}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{va}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bottom}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{9}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{black}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Wyświetlenie sformatowanej tabeli w notebooku}
+\PY{n}{display}\PY{p}{(}\PY{n}{city\PYZus{}stats}\PY{o}{.}\PY{n}{style}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mean}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}:.0f\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{median}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}:.0f\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                                 \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{std}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}:.0f\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}:,.0f\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+C:\textbackslash{}Users\textbackslash{}olale\textbackslash{}AppData\textbackslash{}Local\textbackslash{}Temp\textbackslash{}ipykernel\_12048\textbackslash{}89608967.py:12: FutureWarning:
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in
+v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same
+effect.
+
+  sns.barplot(
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Analiza_mieszkan_Final_files/Analiza_mieszkan_Final_28_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+<pandas.io.formats.style.Styler at 0x1ad18c9d700>
+    \end{Verbatim}
+
+    
+    \paragraph{Statystyki cen za metr kwadratowy według
+miast}\label{statystyki-cen-za-metr-kwadratowy-wedux142ug-miast}
+
+Powyższy wykres prezentuje medianę cen za\,m² w\,15 największych
+polskich miastach, opartą na danych z blisko 83 tys. ofert. Najdroższym
+rynkiem pozostaje \textbf{Warszawa}, gdzie mediana osiąga \textbf{16,5
+tys.\,PLN/m²}, a średnia nawet \textbf{16,9 tys.} Drugi najdroższy rynek
+to \textbf{Kraków} (mediana: 14,9\,tys.), a podium zamyka
+\textbf{Gdańsk} (13,0\,tys.). Warto zauważyć, że \textbf{różnica między
+średnią a medianą} wskazuje na obecność drogich ofert (np. premium lub z
+rynku pierwotnego).
+
+Z kolei najtańsze miasta to \textbf{Radom} i \textbf{Częstochowa}, gdzie
+mediana oscyluje wokół \textbf{6,3 tys.\,PLN/m²} -- mniej niż
+\textbf{40\,\% ceny warszawskiej}.
+
+Wybrane statystyki:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1795}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2308}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2308}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1795}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1795}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Miasto
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Średnia (PLN/m²)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Mediana (PLN/m²)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Odch. stand.
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Liczba ofert
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Warszawa & 16\,900 & 16\,522 & 3\,877 & 28\,278 \\
+Kraków & 15\,338 & 14\,878 & 3\,508 & 12\,542 \\
+Gdańsk & 13\,828 & 12\,972 & 3\,608 & 7\,285 \\
+Wrocław & 12\,640 & 12\,284 & 2\,581 & 8\,502 \\
+Gdynia & 11\,981 & 11\,448 & 3\,110 & 3\,158 \\
+Poznań & 10\,749 & 10\,592 & 2\,069 & 3\,246 \\
+Rzeszów & 9\,788 & 9\,694 & 1\,971 & 673 \\
+Lublin & 9\,349 & 9\,205 & 1\,681 & 2\,037 \\
+Białystok & 9\,094 & 8\,925 & 1\,847 & 900 \\
+Szczecin & 9\,032 & 8\,828 & 2\,212 & 2\,209 \\
+Łódź & 8\,140 & 7\,962 & 1\,600 & 6\,272 \\
+Katowice & 8\,392 & 7\,900 & 2\,259 & 2\,127 \\
+Bydgoszcz & 7\,719 & 7\,572 & 1\,601 & 3\,231 \\
+Radom & 6\,454 & 6\,292 & 1\,061 & 752 \\
+Częstochowa & 6\,438 & 6\,285 & 1\,200 & 1\,103 \\
+\end{longtable}
+
+\textbf{Odchylenie standardowe} jest szczególnie wysokie w dużych
+aglomeracjach (Warszawa, Kraków, Gdańsk), co wskazuje na duży rozrzut
+cen.
+
+\textbf{Wnioski:} - Rynek mieszkaniowy w Polsce jest silnie
+spolaryzowany -- różnice między najdroższymi a najtańszymi miastami
+sięgają ponad \textbf{10 tys. PLN/m²}. - Zróżnicowanie cen sugeruje, że
+średnie wartości nie zawsze oddają faktyczny rozkład -- \textbf{mediana
+jest bardziej reprezentatywna} w wielu przypadkach. - Najwięcej
+analizowanych ofert pochodziło z Warszawy (ponad 28 tys.), co zwiększa
+wiarygodność estymacji dla tego miasta. - Warto zauważyć niewilką liczbę
+ofert dla Rzeszowa, Białegostoku i Radomia, w związku z czym do wyników
+analizy należy podchodzić z lekką rezerwą.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{43}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Analiza 2: Macierz korelacji zmiennych numerycznych}
+\PY{c+c1}{\PYZsh{} Macierz korelacji}
+\PY{n}{corr\PYZus{}columns} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{select\PYZus{}dtypes}\PY{p}{(}\PY{n}{include}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{number}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{columns}
+\PY{n}{num\PYZus{}df} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{n}{corr\PYZus{}columns}\PY{p}{]}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Obliczanie macierzy korelacji}
+\PY{c+c1}{\PYZsh{} Można użyć różnych metod: \PYZsq{}pearson\PYZsq{}, \PYZsq{}spearman\PYZsq{}, \PYZsq{}kendall}
+\PY{n}{corr} \PY{o}{=} \PY{n}{num\PYZus{}df}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{n}{method}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pearson}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Tworzenie maski dla górnego trójkąta aby uniknąć duplikacji wartości}
+\PY{c+c1}{\PYZsh{} mask = np.triu(np.ones\PYZus{}like(corr, dtype=bool))}
+
+\PY{c+c1}{\PYZsh{} Heatmapa}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{13}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}
+    \PY{n}{corr}\PY{p}{,}
+    \PY{c+c1}{\PYZsh{}mask=mask,}
+    \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{coolwarm}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{vmin}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{vmax}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}
+    \PY{n}{annot}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{fmt}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.2f}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{linewidths}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{,}
+    \PY{n}{square}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}
+    \PY{n}{cbar\PYZus{}kws}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{shrink}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{.8}\PY{p}{\PYZcb{}}
+\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Macierz korelacji (Pearson)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{,} \PY{n}{pad}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xticks}\PY{p}{(}\PY{n}{rotation}\PY{o}{=}\PY{l+m+mi}{60}\PY{p}{,} \PY{n}{ha}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{right}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Analiza_mieszkan_Final_files/Analiza_mieszkan_Final_30_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Macierz korelacji zmiennych
+numerycznych}\label{macierz-korelacji-zmiennych-numerycznych}
+
+Najsilniejsze dodatnie zależności:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Metraż (\texttt{squareMeters}) vs.~cena (\texttt{price})}:
+  \emph{r}\,=\,0,56\\
+  Im większa powierzchnia, tym wyższa cena całkowita --- ten efekt był
+  już widoczny na wykresie rozrzutu.
+\item
+  \textbf{Liczba pokoi (\texttt{rooms}) vs.~metraż}: \emph{r}\,=\,0,8\\
+  Więcej pokoi zwykle oznacza większą powierzchnię.
+\end{itemize}
+
+Najsilniejsze ujemne zależności:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Rok budowy (\texttt{buildYear}) vs.~odległość od centrum}
+  (\texttt{centreDistance}): \emph{r}\,≈\,-0,32\\
+  Nowsze inwestycje częściej pojawiają się poza ścisłym centrum.
+\item
+  \textbf{Odległość od centrum (\texttt{centreDistance}) vs.~liczba POI}
+  (\texttt{poiCount}): \emph{r}\,≈\,-0,45
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{44}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Analiza 2: Wpływ udogodnień na cenę mieszkań}
+\PY{n}{amenity\PYZus{}map} \PY{o}{=} \PY{p}{\PYZob{}}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hasParkingSpace}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Miejsce parkingowe}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hasBalcony}\PY{l+s+s1}{\PYZsq{}}     \PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Balkon}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hasElevator}\PY{l+s+s1}{\PYZsq{}}    \PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Winda}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hasSecurity}\PY{l+s+s1}{\PYZsq{}}    \PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Ochrona}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hasStorageRoom}\PY{l+s+s1}{\PYZsq{}} \PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Komórka lokatorska}\PY{l+s+s1}{\PYZsq{}}
+\PY{p}{\PYZcb{}}
+
+\PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{,} \PY{l+m+mi}{16}\PY{p}{)}\PY{p}{)}
+\PY{n}{axes} \PY{o}{=} \PY{n}{axes}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}
+\PY{n}{fmt} \PY{o}{=} \PY{n}{ticker}\PY{o}{.}\PY{n}{FuncFormatter}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{,} \PY{n}{pos}\PY{p}{:} \PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{x}\PY{o}{/}\PY{l+m+mi}{1000}\PY{l+s+si}{:}\PY{l+s+s1}{.0f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ tys.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Wspólny zakres dla osi Y}
+\PY{n}{y\PYZus{}min}\PY{p}{,} \PY{n}{y\PYZus{}max} \PY{o}{=} \PY{l+m+mf}{4e5}\PY{p}{,} \PY{l+m+mf}{1.2e6}   \PY{c+c1}{\PYZsh{} 400 k – 1 200 k}
+
+\PY{k}{for} \PY{n}{ax}\PY{p}{,} \PY{p}{(}\PY{n}{col}\PY{p}{,} \PY{n}{title}\PY{p}{)} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{axes}\PY{p}{,} \PY{n}{amenity\PYZus{}map}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+    \PY{n}{sns}\PY{o}{.}\PY{n}{boxplot}\PY{p}{(}
+        \PY{n}{data}\PY{o}{=}\PY{n}{df}\PY{p}{,}
+        \PY{n}{x}\PY{o}{=}\PY{n}{col}\PY{p}{,}
+        \PY{n}{y}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+        \PY{n}{hue}\PY{o}{=}\PY{n}{col}\PY{p}{,}
+        \PY{n}{legend}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,}
+        \PY{n}{order}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{no}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{yes}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+        \PY{n}{palette}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pastel}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+        \PY{n}{ax}\PY{o}{=}\PY{n}{ax}
+    \PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Wpływ }\PY{l+s+si}{\PYZob{}}\PY{n}{title}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ na cenę}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Posiada }\PY{l+s+si}{\PYZob{}}\PY{n}{title}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cena (PLN)}\PY{l+s+s1}{\PYZsq{}} \PY{k}{if} \PY{n}{col} \PY{o+ow}{in} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hasParkingSpace}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hasElevator}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hasStorage}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{k}{else} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylim}\PY{p}{(}\PY{n}{y\PYZus{}min}\PY{p}{,} \PY{n}{y\PYZus{}max}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{yaxis}\PY{o}{.}\PY{n}{set\PYZus{}major\PYZus{}formatter}\PY{p}{(}\PY{n}{fmt}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.4}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Mediana jako tekst na wykresie}
+    \PY{n}{med} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{n}{col}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{p}{)}
+    \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{cat} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{no}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{yes}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+        \PY{k}{if} \PY{n}{cat} \PY{o+ow}{in} \PY{n}{med}\PY{p}{:}
+            \PY{n}{ax}\PY{o}{.}\PY{n}{annotate}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{med}\PY{p}{[}\PY{n}{cat}\PY{p}{]}\PY{o}{/}\PY{l+m+mi}{1000}\PY{l+s+si}{:}\PY{l+s+s1}{.0f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{k}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                        \PY{n}{xy}\PY{o}{=}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{med}\PY{p}{[}\PY{n}{cat}\PY{p}{]}\PY{p}{)}\PY{p}{,}
+                        \PY{n}{xytext}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{,} \PY{n}{textcoords}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{offset points}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                        \PY{n}{ha}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{center}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{va}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bottom}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{9}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Ukrycie ostatniego wykresu, jeśli jest nieparzysta liczba udogodnień}
+\PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{amenity\PYZus{}map}\PY{p}{)} \PY{o}{\PYZpc{}} \PY{l+m+mi}{2} \PY{o}{!=} \PY{l+m+mi}{0}\PY{p}{:}
+    \PY{n}{axes}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Analiza_mieszkan_Final_files/Analiza_mieszkan_Final_32_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Wpływ udogodnień na cenę
+mieszkania}\label{wpux142yw-udogodnieux144-na-cenux119-mieszkania}
+
+Powyższe boxploty porównują ceny mieszkań w zależności od posiadania
+wybranych udogodnień (miejsca parkingowego, balkonu, windy, komórki
+lokatorskiej i ochrony).
+
+\begin{longtable}[]{@{}llll@{}}
+\toprule\noalign{}
+Udogodnienie & Mediana z udog. & Mediana bez udog. & Różnica \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Miejsce parkingowe & \textbf{\textasciitilde749\,tys.\,PLN} &
+\textasciitilde650\,tys.\,PLN & +15\,\% \\
+Balkon & \textbf{\textasciitilde691\,tys.\,PLN} &
+\textasciitilde649\,tys.\,PLN & +6\,\% \\
+Winda & \textbf{\textasciitilde720\,tys.\,PLN} &
+\textasciitilde622\,tys.\,PLN & +16\,\% \\
+Ochrona & \textbf{\textasciitilde800\,tys.\,PLN} &
+\textasciitilde659\,tys.\,PLN & +21\,\% \\
+Komórka lokatorska & \textbf{\textasciitilde712\,tys.\,PLN} &
+\textasciitilde629\,tys.\,PLN & +13\,\% \\
+\end{longtable}
+
+Wszystkie analizowane udogodnienia mają pozytywny wpływ na cenę
+mieszkań. Największą różnicę cenową obserwujemy dla mieszkań z ochroną,
+windą i miejscem parkingowym, co sugeruje, że te cechy są szczególnie
+wartościowe dla kupujących. Najmniejszy wpływ na cenę ma balkon.
+
+\textbf{Wniosek:} obecność udogodnień koreluje z wyższą ceną ofertową,
+ale skala wpływu różni się w zależności od rodzaju udogodnienia;
+czynniki te warto włączyć do modelu predykcyjnego.
+
+    \section{WNIOSKI}\label{wnioski}
+
+    Podsumowując, analiza danych dotyczących cen mieszkań w 15 największych
+miastach Polski wykazała silne zróżnicowanie cen -- zarówno ogólnych,
+jak i za metr kwadratowy -- ze szczególnie wysokimi wartościami w
+Warszawie, Krakowie i Gdańsku. Do najważniejszych czynników wpływających
+na cenę należą: powierzchnia mieszkania (najmocniejszy predyktor),
+liczba pokoi, obecność udogodnień takich jak winda, miejsce parkingowe
+czy ochrona. Analiza korelacji ujawniła, że odległość od centrum ma
+mniejszy wpływ niż oczekiwano.
+
+Ograniczeniem badania są dane pochodzące wyłącznie z ogłoszeń (a nie
+transakcyjne) i autocenzura cen przez sprzedających. W dalszej pracy
+dane te można wykorzystać do budowy predykcyjnego modelu cen mieszkań na
+wybranych rynkach lokalnych, uzupełnić o dodatkowe źródła danych lub
+przeprowadzić analizy segmentacji rynków.
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
